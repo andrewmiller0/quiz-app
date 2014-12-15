@@ -8,28 +8,31 @@
  * Controller of the quizApp
  */
 angular.module('quizApp')
-  .controller('QuestionCtrl', function ($scope, $http) {
-    self = this;
+  .controller('QuestionCtrl', function ($scope, $http, score, Quiz) {
+    var self = this;
+    self.quiz;
 
-    $http.get('http://localhost:3000/questions').success(function(questions){
-      var quizArray = [];
-      questions.forEach(function(question){
-      var holderObj ={};
-      holderObj.q = question.question;
-      holderObj.answer = question.answer;
-      holderObj.difficulty = question.difficulty;
-      holderObj.options = [];
-      for(var i = 0; i< question.ops.length; i++){
-        var otherObj = {};
-        otherObj = question.ops[i];
-        holderObj.options.push(otherObj);
-      }
-      console.log(quizArray);
-      quizArray.push(holderObj);
-      holderObj= {};
-    });
-      self.quiz = quizArray;
-    });
+    var questions = Quiz.query(function(){
+        var quizArray = [];
+        questions.forEach(function(question){
+
+          var holderObj ={};
+          holderObj.q = question.question;
+          holderObj.answer = question.answer;
+          holderObj.difficulty = question.difficulty;
+          holderObj.options = [];
+
+          for(var i = 0; i< question.ops.length; i++){
+            var otherObj = {};
+            otherObj = question.ops[i];
+            holderObj.options.push(otherObj);
+          }
+          // console.log(quizArray);
+          quizArray.push(holderObj);
+          holderObj= {};
+      });
+        self.quiz = quizArray;      
+      });
 
     self.nextQuestion = {
       q: "",
@@ -53,7 +56,7 @@ angular.module('quizApp')
 
     }
 
-    self.points = 0;
+    // scoreKeeperFactory.setScore = 0;
 
     self.submitQuestion = function() {
       console.log('working');
@@ -70,19 +73,20 @@ angular.module('quizApp')
       };
     };
 
+    self.score = score;
+
 	self.checkAnswer = function(question, val) {
     console.log('negative');
       // check if the given val matches the answer
       if (!question.answered) {
         question.answered = true;
         if (question.answer === val) {
-          self.points += 10;
+          self.score.addScore(10);
         } else {
-          self.points -= 10;
-
+          self.score.addScore(-10);
         }
       }
-      //$emit(self.points);
+      //$emit(scoreKeeperFactory.setScore);
     };
 
     $scope.$watchCollection('question.nextQuestion.options', function(newval, oldval){

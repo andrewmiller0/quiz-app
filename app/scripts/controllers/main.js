@@ -8,7 +8,7 @@
  * Controller of the quizApp
  */
 angular.module('quizApp')
-  .controller('MainCtrl', function ($scope) {
+  	.controller('MainCtrl', function ($scope) {
 
 
 

@@ -54,8 +54,8 @@
                 <button class="btn btn-primary" type="submit" ng-model="newQuestionForm" ng-disabled="!newQuestionForm.$valid">Submit</button>
             </form>
         </div>
-        <h3>Score: {{ question.points }}</h3>
-        <br>
+        <h3>Score: {{ question.score.getScore() }}</h3>
+        <br />
         <ul>
             <li ng-repeat="quest in question.quiz | orderBy: 'difficulty'">
               <button type="button" class="btn btn-danger btn-sm" ng-click = "question.deleteQuestion(quest.q, $index)">X</button>
@@ -66,9 +66,9 @@
                     <button class="btn btn-default" ng-click="question.checkAnswer(quest, option.value)">
                         {{ option.value }}
                     </button>
-                    <br>
+                    <br />
                 </div>
-                <br>
+                <br />
 
             </li>
         </ul>

@@ -11,7 +11,9 @@ angular.module('quizApp')
   .controller('QuizCtrl', function ($interval) {
     var self = this;
 
+    // self.score = scoreProvider.$get();
     var startTime = 50;
+    // self.score = scoreKeeper;
 
     self.counter = startTime;
 
